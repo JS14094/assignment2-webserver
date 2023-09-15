@@ -27,7 +27,7 @@ def webServer(port=13331):
         if message == None:
           message = ""
         message += data
-        if len(data) != 1024 and data[len(data) - 1] != "\n":  # if it's 1024 exactly then need to check last char for /r/n
+        if len(data) <= 1024 and data[len(data) - 1] == "\n":  # if it's 1024 exactly then need to check last char for /r/n
           break
 
       filename = message.split()[1]
