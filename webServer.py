@@ -37,7 +37,7 @@ def webServer(port=13331):
       f = open(filename[1:], "rb") #fill in start #fill in end)
       #fill in end
       
-      outputdata = b"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\n"
+      outputdata = b"HTTP/1.1 200 OK\r\nConnection: close\r\nServer: python3\r\nContent-Type: text/html; charset=UTF-8\r\n\n"
       #Fill in start -This variable can store your headers you want to send for any valid or invalid request. 
       #Content-Type above is an example on how to send a header as bytes. There are more!
       #Fill in end
@@ -63,7 +63,7 @@ def webServer(port=13331):
       # Send response message for invalid request due to the file not being found (404)
       # Remember the format you used in the try: block!
       #Fill in start
-      outputdata = b"HTTP/1.1 404 Not Found\r\nContent-Type: text/html; charset=UTF-8\r\n"
+      outputdata = b"HTTP/1.1 404 Not Found\r\nConnection: close\r\nServer: python3\r\nContent-Type: text/html; charset=UTF-8\r\n"
       connectionSocket.send(outputdata)
       #Fill in end
 
