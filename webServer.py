@@ -17,8 +17,7 @@ def webServer(port=13331):
 
   while True:
     #Establish the connection
-    
-    print('Ready to serve...')
+
     connectionSocket, addr = serverSocket.accept() #Fill in start -are you accepting connections?     #Fill in end
     
     try:
@@ -48,7 +47,6 @@ def webServer(port=13331):
         bytes = f.read()
         outputdata += bytes
       encoded = outputdata
-      print(outputdata)
       connectionSocket.send(encoded)
       f.close()
       connectionSocket.close() #closing the connection socket
@@ -57,7 +55,6 @@ def webServer(port=13331):
       # Send response message for invalid request due to the file not being found (404)
       # Remember the format you used in the try: block!
       #Fill in start
-      print(e)
       outputdata = b"HTTP/1.1 404 Not Found\r\nContent-Type: text/html; charset=UTF-8\r\n"
       connectionSocket.send(outputdata)
       #Fill in end
