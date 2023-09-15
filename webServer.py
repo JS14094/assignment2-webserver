@@ -12,25 +12,25 @@ def webServer(port=13331):
   serverSocket.bind(("", port))
   
   #Fill in start
-
+  serverSocket.listen(1)
   #Fill in end
 
   while True:
     #Establish the connection
     
     print('Ready to serve...')
-    connectionSocket, addr = #Fill in start -are you accepting connections?     #Fill in end
+    connectionSocket, addr = serverSocket.accept() #Fill in start -are you accepting connections?     #Fill in end
     
     try:
-      message = #Fill in start -a client is sending you a message   #Fill in end 
+      message = connectionSocket.recv(1024).decode()#Fill in start -a client is sending you a message   #Fill in end
       filename = message.split()[1]
       
       #opens the client requested file. 
       #Plenty of guidance online on how to open and read a file in python. How should you read it though if you plan on sending it through a socket?
-      f = open(filename[1:], #fill in start #fill in end)
+      f = open(filename[1:], "rb") #fill in start #fill in end)
       #fill in end
       
-      outputdata = b"Content-Type: text/html; charset=UTF-8\r\n"
+      outputdata = b"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\n"
       #Fill in start -This variable can store your headers you want to send for any valid or invalid request. 
       #Content-Type above is an example on how to send a header as bytes. There are more!
       #Fill in end
@@ -44,20 +44,28 @@ def webServer(port=13331):
 
       #Send the content of the requested file to the client
       for i in f: #for line in file
-        #Fill in start - send your html file contents #Fill in end 
+        #Fill in start - send your html file contents #Fill in end
+        bytes = f.read()
+        outputdata += bytes
+      encoded = outputdata
+      print(outputdata)
+      connectionSocket.send(encoded)
+      f.close()
       connectionSocket.close() #closing the connection socket
       
     except Exception as e:
       # Send response message for invalid request due to the file not being found (404)
       # Remember the format you used in the try: block!
       #Fill in start
-
+      print(e)
+      outputdata = b"HTTP/1.1 404 Not Found\r\nContent-Type: text/html; charset=UTF-8\r\n"
+      connectionSocket.send(outputdata)
       #Fill in end
 
 
       #Close client socket
       #Fill in start
-
+      connectionSocket.close()  # closing the connection socket
       #Fill in end
 
   #Commenting out the below, as its technically not required and some students have moved it erroneously in the While loop. DO NOT DO THAT OR YOURE GONNA HAVE A BAD TIME.
