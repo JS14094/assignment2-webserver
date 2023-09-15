@@ -55,7 +55,6 @@ def webServer(port=13331):
         bytes = f.read()
         outputdata += bytes
       encoded = outputdata
-      print(encoded)
       connectionSocket.send(encoded)
       f.close()
       connectionSocket.close() #closing the connection socket
