@@ -21,7 +21,15 @@ def webServer(port=13331):
     connectionSocket, addr = serverSocket.accept() #Fill in start -are you accepting connections?     #Fill in end
     
     try:
-      message = connectionSocket.recv(1024).decode()#Fill in start -a client is sending you a message   #Fill in end
+      message = None
+      while True:
+        data = connectionSocket.recv(1024).decode()#Fill in start -a client is sending you a message   #Fill in end
+        if message == None:
+          message = ""
+        message += data
+        if len(data) != 1024 and data[len(data) - 1] != "\n":  # if it's 1024 exactly then need to check last char for /r/n
+          break
+
       filename = message.split()[1]
       
       #opens the client requested file. 
@@ -47,6 +55,7 @@ def webServer(port=13331):
         bytes = f.read()
         outputdata += bytes
       encoded = outputdata
+      print(encoded)
       connectionSocket.send(encoded)
       f.close()
       connectionSocket.close() #closing the connection socket
