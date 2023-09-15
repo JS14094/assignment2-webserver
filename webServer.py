@@ -6,6 +6,7 @@ import sys
 
 
 def webServer(port=13331):
+  bufferSize = 256000
   serverSocket = socket(AF_INET, SOCK_STREAM)
   
   #Prepare a server socket
@@ -23,11 +24,11 @@ def webServer(port=13331):
     try:
       message = None
       while True:
-        data = connectionSocket.recv(1024).decode()#Fill in start -a client is sending you a message   #Fill in end
+        data = connectionSocket.recv(bufferSize).decode()#Fill in start -a client is sending you a message   #Fill in end
         if message == None:
           message = ""
         message += data
-        if len(data) <= 1024 and data[len(data) - 1] == "\n":  # if it's 1024 exactly then need to check last char for /r/n
+        if len(data) <= bufferSize and data[len(data) - 1] == "\n":  # if it's bufferSize exactly then need to check last char for /r/n
           break
 
       filename = message.split()[1]
@@ -37,7 +38,7 @@ def webServer(port=13331):
       f = open(filename[1:], "rb") #fill in start #fill in end)
       #fill in end
       
-      outputdata = b"HTTP/1.1 200 OK\r\nConnection: close\r\nServer: python3\r\nContent-Type: text/html; charset=UTF-8\r\n\n"
+      outputdata = b"HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nServer: python3\r\nContent-Type: text/html; charset=UTF-8\r\n\n"
       #Fill in start -This variable can store your headers you want to send for any valid or invalid request. 
       #Content-Type above is an example on how to send a header as bytes. There are more!
       #Fill in end
@@ -57,13 +58,13 @@ def webServer(port=13331):
       encoded = outputdata
       connectionSocket.send(encoded)
       f.close()
-      connectionSocket.close() #closing the connection socket
+      #connectionSocket.close() #closing the connection socket
       
     except Exception as e:
       # Send response message for invalid request due to the file not being found (404)
       # Remember the format you used in the try: block!
       #Fill in start
-      outputdata = b"HTTP/1.1 404 Not Found\r\nConnection: close\r\nServer: python3\r\nContent-Type: text/html; charset=UTF-8\r\n"
+      outputdata = b"HTTP/1.1 404 Not Found\r\nConnection: close\r\nServer: python3\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n"
       connectionSocket.send(outputdata)
       #Fill in end
 
