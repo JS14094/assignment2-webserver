@@ -60,7 +60,7 @@ def webServer(port=13331):
       connectionSocket.send(encoded)
       print(str(outputdata))
       f.close()
-      #connectionSocket.close() #closing the connection socket
+      connectionSocket.close() #closing the connection socket
       
     except Exception as e:
       # Send response message for invalid request due to the file not being found (404)
@@ -74,7 +74,7 @@ def webServer(port=13331):
 
       #Close client socket
       #Fill in start
-      #connectionSocket.close()  # closing the connection socket
+      connectionSocket.close()  # closing the connection socket
       #Fill in end
 
   #Commenting out the below, as its technically not required and some students have moved it erroneously in the While loop. DO NOT DO THAT OR YOURE GONNA HAVE A BAD TIME.
